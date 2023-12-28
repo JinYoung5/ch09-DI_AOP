@@ -13,7 +13,7 @@
 		<!-- name: 의존 객체를 주입할 때 사용할 설정 메서드의 프로퍼티 이름 -->
 		<property name="registerDAO"> <!-- RegisterService 에 있는 registerDAO -->
 			<!-- ref: 주입할 의존 객체 지정 -->
-			<ref bean="registerDAO"/>
+			<ref bean="registerDAO"/> <!-- 빈의 이름(식별자) -->
 		</property>
 	</bean>
 	<bean name="registerDAO" class="kr.spring.ch07.RegisterDAO"/>
@@ -29,7 +29,57 @@
 	</bean>
 	<bean id="email" class="kr.spring.ch08.EmailSender"/>
 	
-	<!-- XML 네임스페이스를 이용한 프로퍼티 설정 --> <!-- bean태그에 속성으로 표시 -->
+	<!-- XML 네임스페이스를 이용한 프로퍼티 설정 --> <!-- bean태그에 속성으로 표시 --> <!-- 코드를 줄이기위해 xmlns:p 의 p 를 이용함 -->
 	<bean id="upload" class="kr.spring.ch09.UploadController" p:timeout="50" p:image-ref="image"/> <!-- p: property의 약자 -->
 	<bean id="image" class="kr.spring.ch09.ImageSender"/>
+	
+	<!-- 컬렉션 타입의 프로퍼티 설정 -->
+	<!-- List 타입 프로퍼티 설정 -->
+	<bean name="performanceMonitor" class="kr.spring.ch10.PerformanceMonitor">
+		<property name="deviations">
+			<list value-type="java.lang.Double">
+				<value>0.2</value>
+				<value>0.3</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Map 타입 프로퍼티 설정 -->
+	<bean name="protocolHandlerFactory" class="kr.spring.ch11.ProtocolHandlerFactory">
+		<property name="map">
+			<map key-type="java.lang.String" value-type="java.lang.Object">
+				<entry> <!-- entry - key - value 쌍 -->
+					<key><value>soap</value></key>
+					<ref bean="soapHandler"/>
+				</entry>
+				<entry>
+					<key><value>rest</value></key>
+					<ref bean="restHandler"/>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean name="soapHandler" class="kr.spring.ch11.SoapHandler"/>
+	<bean name="restHandler" class="kr.spring.ch11.RestHandler"/>
+	
+	<!-- Set 타입 프로퍼티 설정 -->
+	<bean name="videoClient" class="kr.spring.ch12.VideoClient">
+		<property name="subSet">
+			<set>
+				<value>10</value>
+				<value>20</value>
+			</set>
+		</property>
+	</bean>
+	
+	<!-- Properties 타입 프로퍼티 설정 -->
+	<bean name="bookClient" class="kr.spring.ch13.BookClient">
+		<property name="prop">
+			<props>
+				<prop key="server">192.168.0.1</prop>
+				<prop key="connectionTimeout">5000</prop>
+			</props>
+		</property>
+	</bean>
+	
 </beans>
